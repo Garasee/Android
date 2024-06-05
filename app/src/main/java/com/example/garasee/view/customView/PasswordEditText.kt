@@ -2,16 +2,19 @@ package com.example.garasee.view.customView
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Rect
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
+import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatEditText
 import com.example.garasee.R
 
 class PasswordEditText : AppCompatEditText {
     private var isPasswordVisible = false
+    private var iconBounds = Rect()
 
     constructor(context: Context) : super(context) {
         init()
@@ -27,13 +30,14 @@ class PasswordEditText : AppCompatEditText {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun init() {
-        inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
 
         updateVisibilityIcon()
 
         setOnTouchListener { _, event ->
-            if (event.action == android.view.MotionEvent.ACTION_UP) {
-                if (event.rawX >= right - compoundDrawablesRelative[2].bounds.width()) {
+            if (event.action == MotionEvent.ACTION_UP) {
+                // Adjust the touch area to account for the padding
+                if (event.rawX >= (right - iconBounds.width() - paddingEnd) &&
+                    event.rawX <= (right - paddingEnd)) {
                     togglePasswordVisibility()
                     updateVisibilityIcon()
                     return@setOnTouchListener true
@@ -63,6 +67,9 @@ class PasswordEditText : AppCompatEditText {
         else
             PasswordTransformationMethod.getInstance()
 
+        // Move the cursor to the end of the text
+        setSelection(text?.length ?: 0)
+
         invalidate()
     }
 
@@ -72,7 +79,11 @@ class PasswordEditText : AppCompatEditText {
         else
             R.drawable.baseline_visibility_off_24
 
-        setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, icon, 0)
+        // Set the icon with padding
+        val drawable = context.getDrawable(icon)
+        drawable?.bounds?.let { iconBounds = it }
+
+        setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawable, null)
 
         requestLayout()
         invalidate()

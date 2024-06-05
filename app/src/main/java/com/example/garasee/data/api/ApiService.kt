@@ -12,6 +12,14 @@ import retrofit2.http.Part
 import retrofit2.http.Query
 
 interface ApiService {
+
+    @FormUrlEncoded
+    @POST("login")
+    suspend fun login(
+        @Field("email") email: String,
+        @Field("password") password: String
+    ): Response<LoginResponse>
+
     @FormUrlEncoded
     @POST("register")
     suspend fun register(
@@ -20,12 +28,71 @@ interface ApiService {
         @Field("password") password: String
     ): SignupResponse
 
-    @FormUrlEncoded
-    @POST("login")
-    suspend fun login(
-        @Field("email") email: String,
-        @Field("password") password: String
-    ): Response<LoginResponse>
+
+
+
+    //API GARASEE
+
+//    @FormUrlEncoded
+//    @POST("auth/login")
+//    suspend fun login(
+//        @Field("email") email: String,
+//        @Field("password") password: String
+//    ): Response<LoginResponse>
+
+//    @FormUrlEncoded
+//    @POST("auth/registration")
+//    suspend fun register(
+//        @Field("name") name: String,
+//        @Field("email") email: String,
+//        @Field("phone") phone: String,
+//        @Field("password") password: String,
+//        @Field("confirmationPassword") confirmationPassword: String,
+//        @Field("province") province: String,
+//        @Field("city") city: String,
+//    ): SignupResponse
+
+//    @GET("users")
+//    suspend fun getUser(
+//
+//    ): GetUserResponse
+
+//    @PUT("users")
+//    suspend fun updateUser(
+//        @Body user: UpdateUserRequest
+//    ): CommonResponse
+
+//    @FormUrlEncoded
+//    @PATCH("users/change-password")
+//    suspend fun changePassword(
+//        @Field("oldPassword") oldPassword: String,
+//        @Field("password") password: String,
+//        @Field("confirmationPassword") confirmationPassword: String
+//    ): CommonResponse
+//
+//    @FormUrlEncoded
+//    @POST("users/forgot-password")
+//    suspend fun forgotPassword(
+//        @Field("email") email: String
+//    ): CommonResponse
+//
+//    @FormUrlEncoded
+//    @PATCH("users/reset-password")
+//    suspend fun resetPassword(
+//        @Header("X-RESET-TOKEN") resetToken: String,
+//        @Field("password") password: String,
+//        @Field("confirmationPassword") confirmationPassword: String
+//    ): CommonResponse
+
+
+
+
+
+
+
+
+
+
 
 //    @GET("stories")
 //    suspend fun getStories(

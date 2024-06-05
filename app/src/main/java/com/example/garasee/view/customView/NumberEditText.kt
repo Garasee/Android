@@ -2,12 +2,13 @@ package com.example.garasee.view.customView
 
 import android.content.Context
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 import com.example.garasee.R
 
-class NameEditText : AppCompatEditText {
+class NumberEditText : AppCompatEditText {
     constructor(context: Context) : super(context) {
         init()
     }
@@ -21,26 +22,23 @@ class NameEditText : AppCompatEditText {
     }
 
     private fun init() {
+        inputType = InputType.TYPE_CLASS_NUMBER
         addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                validateName(s.toString())
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                validateName(s.toString())
+                validateNumber(s.toString())
             }
 
-            override fun afterTextChanged(s: Editable?) {
-                validateName(s.toString())
-            }
+            override fun afterTextChanged(s: Editable?) {}
         })
     }
 
-    private fun validateName(name: String) {
-        if (name.isEmpty()) {
+    private fun validateNumber(number: String) {
+        if (number.isEmpty()) {
             error = null
-        } else if (name.isEmpty()) {
-            error = context.getString(R.string.invalid_name)
+        } else if (!number.matches("\\d+".toRegex())) {
+            error = context.getString(R.string.invalid_number)
         } else {
             error = null
         }

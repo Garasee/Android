@@ -26,3 +26,19 @@ data class SignupResponse(
         val password: String
     )
 }
+
+//data class SignupResponse(
+//    @SerializedName("isSuccess")
+//    val isSuccess: Boolean,
+
+//    @SerializedName("statusCode")
+//    val statusCode: Int,
+//
+//    @SerializedName("message")
+//    val message: String,
+//
+//    @SerializedName("content")
+//    val content: Any?
+
+//)
+//}

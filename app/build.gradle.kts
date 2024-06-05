@@ -74,6 +74,7 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
     implementation ("androidx.room:room-runtime:2.6.1")
     implementation ("com.github.yalantis:ucrop:2.2.8")
+    implementation ("com.hbb20:ccp:2.7.0")
     implementation ("com.android.volley:volley:1.2.1")
     implementation ("androidx.room:room-runtime:2.6.1")
     ksp ("androidx.room:room-compiler:2.6.1")

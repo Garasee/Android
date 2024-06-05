@@ -33,6 +33,9 @@
             android:name=".view.login.LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".view.forgot.ForgotActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.history.HistoryActivity"
             android:exported="false" />
         <activity

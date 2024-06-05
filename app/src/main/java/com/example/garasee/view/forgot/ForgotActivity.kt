@@ -1,4 +1,4 @@
-package com.example.garasee.view.login
+package com.example.garasee.view.forgot
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
@@ -13,29 +13,31 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
-import com.example.garasee.databinding.ActivityLoginBinding
 import com.example.garasee.R
 import com.example.garasee.data.pref.UserModel
+import com.example.garasee.databinding.ActivityForgotBinding
+import com.example.garasee.databinding.ActivityLoginBinding
 import com.example.garasee.helper.ViewModelFactory
-import com.example.garasee.view.forgot.ForgotActivity
+import com.example.garasee.view.login.LoginActivity
+import com.example.garasee.view.login.LoginViewModel
 import com.example.garasee.view.main.MainActivity
 import com.example.garasee.view.signup.SignupActivity
 import com.example.garasee.view.welcome.WelcomeActivity
+import kotlinx.coroutines.launch
 
-class LoginActivity : AppCompatActivity() {
-    private lateinit var viewModel: LoginViewModel
-    private lateinit var binding: ActivityLoginBinding
+class ForgotActivity : AppCompatActivity() {
+//    private lateinit var viewModel: LoginViewModel
+    private lateinit var binding: ActivityForgotBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityForgotBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        lifecycleScope.launch {
-            val viewModelFactory = ViewModelFactory.getInstance(application as Application)
-            viewModel = ViewModelProvider(this@LoginActivity, viewModelFactory).get(LoginViewModel::class.java)
-        }
+//        lifecycleScope.launch {
+//            val viewModelFactory = ViewModelFactory.getInstance(application as Application)
+//            viewModel = ViewModelProvider(this@LoginActivity, viewModelFactory).get(LoginViewModel::class.java)
+//        }
 
         setupView()
         setupAction()
@@ -56,44 +58,32 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.loginButton.setOnClickListener {
+        binding.sendButton.setOnClickListener {
             val email = binding.edLoginEmail.text.toString()
-            val password = binding.edLoginPassword.text.toString()
-            if (checkInput(email, password)) {
-                viewModel.login(email, password).observe(this) { user ->
-                    if (user != null) {
-                        viewModel.saveSession(UserModel(user.userId, user.token, true))
-                        showSuccessDialog()
-                    } else {
-                        showErrorDialog()
-                    }
-                }
-            }
+//            if (checkInput(email)) {
+//                viewModel.login(email, password).observe(this) { user ->
+//                    if (user != null) {
+//                        viewModel.saveSession(UserModel(user.userId, user.token, true))
+//                        showSuccessDialog()
+//                    } else {
+//                        showErrorDialog()
+//                    }
+//                }
+//            }
         }
 
-        binding.signupnow.setOnClickListener {
-            val intent = Intent(this, SignupActivity::class.java)
-            intent.flags =
-                Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-        }
-
-        binding.forgotPassword.setOnClickListener {
-            val intent = Intent(this, ForgotActivity::class.java)
+        binding.signinnow.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
             intent.flags =
                 Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
     }
 
-    private fun checkInput(email: String, password: String): Boolean {
+    private fun checkInput(email: String): Boolean {
         var isValid = true
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.edLoginEmail.error = getString(R.string.invalid_email)
-            isValid = false
-        }
-        if (password.isEmpty() || password.length < 8) {
-            binding.edLoginPassword.error = getString(R.string.invalid_password)
             isValid = false
         }
         return isValid
@@ -131,18 +121,16 @@ class LoginActivity : AppCompatActivity() {
         val title = ObjectAnimator.ofFloat(binding.titleTextView, View.ALPHA, 1f).setDuration(100)
         val desc = ObjectAnimator.ofFloat(binding.descTextView, View.ALPHA, 1f).setDuration(100)
         val emailview = ObjectAnimator.ofFloat(binding.edLoginEmail, View.ALPHA, 1f).setDuration(100)
-        val passview = ObjectAnimator.ofFloat(binding.edLoginPassword, View.ALPHA, 1f).setDuration(100)
-        val forgot = ObjectAnimator.ofFloat(binding.forgotPassword, View.ALPHA, 1f).setDuration(100)
-        val donthave = ObjectAnimator.ofFloat(binding.donthave, View.ALPHA, 1f).setDuration(100)
-        val signupnow = ObjectAnimator.ofFloat(binding.signupnow, View.ALPHA, 1f).setDuration(100)
-        val loginbuttonview = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(100)
+        val signinnow = ObjectAnimator.ofFloat(binding.signinnow, View.ALPHA, 1f).setDuration(100)
+        val remember = ObjectAnimator.ofFloat(binding.remember, View.ALPHA, 1f).setDuration(100)
+        val sendbuttonview = ObjectAnimator.ofFloat(binding.sendButton, View.ALPHA, 1f).setDuration(100)
 
         val together = AnimatorSet().apply {
-            playTogether(emailview, passview)
+            playTogether(emailview)
         }
 
         AnimatorSet().apply {
-            playSequentially(title, desc, together, loginbuttonview, forgot, donthave, signupnow)
+            playSequentially(title, desc, together, sendbuttonview, remember, signinnow)
             start()
         }
 
@@ -150,7 +138,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        val intent = Intent(this, WelcomeActivity::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
         finish()
