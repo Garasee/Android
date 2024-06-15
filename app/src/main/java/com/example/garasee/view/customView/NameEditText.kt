@@ -37,12 +37,12 @@ class NameEditText : AppCompatEditText {
     }
 
     private fun validateName(name: String) {
-        if (name.isEmpty()) {
-            error = null
+        error = if (name.isEmpty()) {
+            null
         } else if (name.isEmpty()) {
-            error = context.getString(R.string.invalid_name)
+            context.getString(R.string.invalid_name)
         } else {
-            error = null
+            null
         }
     }
 }

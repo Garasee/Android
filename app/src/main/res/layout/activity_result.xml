@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
+        app:titleTextColor="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +26,8 @@
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_place_holder"
         app:layout_constraintTop_toBottomOf="@+id/toolbar4"
-        app:layout_constraintBottom_toTopOf="@+id/result_text"/>
+        app:layout_constraintBottom_toTopOf="@+id/result_text"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/result_text"
@@ -33,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
-        android:textSize="24dp"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:text="@string/result"
         app:layout_constraintTop_toBottomOf="@+id/result_image"

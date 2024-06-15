@@ -33,12 +33,12 @@ class EmailEditText : AppCompatEditText {
     }
 
     private fun validateEmail(email: String) {
-        if (email.isEmpty()) {
-            error = null
+        error = if (email.isEmpty()) {
+            null
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            error = context.getString(R.string.invalid_email)
+            context.getString(R.string.invalid_email)
         } else {
-            error = null
+            null
         }
     }
 }

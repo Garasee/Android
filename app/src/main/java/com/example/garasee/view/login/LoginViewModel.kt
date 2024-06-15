@@ -11,10 +11,10 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
     fun login(email: String, password: String) = liveData {
         try {
             val response = repository.login(email, password)
-            if (response.error) {
-                throw Exception(response.message)
+            if (response.isSuccess) {
+                emit(response.content)
             } else {
-                emit(response.loginResult)
+                throw Exception(response.message)
             }
         } catch (e: Exception) {
             emit(null)

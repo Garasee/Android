@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:background="@color/white"
+    android:background="@color/white2"
     android:textAppearance="?android:attr/textAppearanceListItemSmall">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -22,22 +21,22 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tvTimestamp"
+            android:id="@+id/tv_timestamp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:textColor="@color/black"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:textColor="@color/black"/>
 
         <TextView
-            android:id="@+id/tvResult"
+            android:id="@+id/tv_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:gravity="center_vertical"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:textColor="@color/black"/>
 
     </LinearLayout>
 

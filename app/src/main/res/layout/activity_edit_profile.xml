@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".view.editprofile.EditProfileActivity">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        android:elevation="4dp"/>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar4"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:titleTextColor="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="@string/editprofile"
+        android:textColor="@color/black"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/linear2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linear2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/descTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/editprofiledesc"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+
+        <com.example.garasee.view.customView.NameEditText
+            android:id="@+id/ed_register_name"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:hint="@string/name"
+            android:textColorHint="@color/grey"
+            android:textColor="@color/black"
+            android:paddingHorizontal="24dp"
+            android:background="@drawable/whitebox_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp">
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/countryCodeHolder"
+                android:layout_width="wrap_content"
+                android:layout_height="72dp"
+                app:ccp_showFullName="false"
+                app:ccp_showNameCode="false"
+                app:ccp_showPhoneCode="true"
+                app:ccp_showFlag="true"
+                app:ccp_autoFormatNumber="false"
+                app:ccp_showArrow="true"
+                app:ccp_arrowColor="@color/black"
+                app:ccp_defaultPhoneCode="62"
+                app:ccp_textSize="16sp"
+                android:textColor="@color/black"
+                app:ccp_arrowSize="16sp"
+                app:ccpDialog_keyboardAutoPopup="false"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/whitebox_background"
+                android:paddingHorizontal="4dp"
+                app:ccpDialog_background="@color/white"
+                app:ccpDialog_searchEditTextTint="@color/black"
+                app:ccpDialog_showCloseIcon="true"
+                app:ccpDialog_showFastScroller="true"
+                />
+
+            <com.example.garasee.view.customView.NumberEditText
+                android:id="@+id/ed_register_phone"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:inputType="text"
+                android:maxLines="1"
+                android:hint="@string/phone_number"
+                android:textColorHint="@color/grey"
+                android:textColor="@color/black"
+                android:layout_marginStart="8dp"
+                android:paddingHorizontal="24dp"
+                android:background="@drawable/whitebox_background"
+                />
+
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            app:boxBackgroundColor="@color/white2"
+            app:boxStrokeColor="@color/white2"
+            app:boxStrokeErrorColor="@color/defaultBorderFlagColor"
+            app:boxStrokeWidth="0dp"
+            app:hintEnabled="false"
+            app:boxCornerRadiusTopStart="20dp"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:endIconMode="dropdown_menu"
+            app:endIconTint="@color/grey"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <!-- Inside text input layout add
+                  an auto complete text view
+                    and make its input type to none-->
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/autoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="24dp"
+                android:hint="@string/city"
+                android:textColorHint="@color/grey"
+                android:textColor="@color/black"
+                android:inputType="text"
+                android:textSize="18sp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/signupButton"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/blue"
+        android:text="@string/submit"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear2"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

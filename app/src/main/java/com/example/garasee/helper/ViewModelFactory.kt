@@ -8,14 +8,15 @@ import com.example.garasee.repository.UserRepository
 import com.example.garasee.view.login.LoginViewModel
 import com.example.garasee.view.main.MainViewModel
 import com.example.garasee.view.history.HistoryViewModel
-import com.example.garasee.repository.NoteRepository
+import com.example.garasee.repository.ProfileRepository
+import com.example.garasee.view.profile.ProfileViewModel
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.flow.first
 
 class ViewModelFactory private constructor(
     private val application: Application,
     private val userRepository: UserRepository,
-    private val noteRepository: NoteRepository
+    private val profileRepository: ProfileRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -30,12 +31,22 @@ class ViewModelFactory private constructor(
                     throw IllegalStateException("User is not logged in")
                 }
             }
+            modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
+                var isUserLoggedIn: Boolean
+                runBlocking { isUserLoggedIn = userRepository.isUserLoggedIn().first() }
+                if (isUserLoggedIn) {
+                    ProfileViewModel(profileRepository) as T
+                } else {
+                    throw IllegalStateException("User is not logged in")
+                }
+            }
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
                 HistoryViewModel(application) as T
             }
+
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
     }
@@ -49,8 +60,8 @@ class ViewModelFactory private constructor(
                 val instance: ViewModelFactory
                 runBlocking {
                     val userRepository = Injection.provideUserRepository(application)
-                    val noteRepository = Injection.provideNoteRepository(application)
-                    instance = ViewModelFactory(application, userRepository, noteRepository)
+                    val profileRepository = Injection.provideProfileRepository(application)
+                    instance = ViewModelFactory(application, userRepository, profileRepository)
                 }
                 INSTANCE = instance
                 instance

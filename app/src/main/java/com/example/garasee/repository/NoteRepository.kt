@@ -1,11 +1,7 @@
 package com.example.garasee.repository
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.room.Room
-import com.example.garasee.data.api.ApiService
-import com.example.garasee.data.pref.UserPreference
 import com.example.garasee.database.Note
 import com.example.garasee.database.NoteDao
 import com.example.garasee.database.NoteRoomDatabase

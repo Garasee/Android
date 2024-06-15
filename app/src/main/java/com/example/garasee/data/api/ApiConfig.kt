@@ -1,5 +1,6 @@
 package com.example.garasee.data.api
 
+import android.util.Log
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -8,17 +9,29 @@ import java.util.concurrent.TimeUnit
 import com.example.garasee.BuildConfig
 
 object ApiConfig {
-    const val BASE_URL = BuildConfig.BASE_URL
+    private const val BASE_URL = BuildConfig.BASE_URL
 
-    fun getApiService(token: String): ApiService {
-        val loggingInterceptor = if(BuildConfig.DEBUG) { HttpLoggingInterceptor().setLevel(
-            HttpLoggingInterceptor.Level.BODY) }else { HttpLoggingInterceptor().setLevel(
-            HttpLoggingInterceptor.Level.NONE) }
+    @Volatile
+    private var token: String? = null
+
+    fun setToken(newToken: String) {
+        token = newToken
+    }
+
+    fun getApiService(): ApiService {
+
+        val loggingInterceptor = if(BuildConfig.DEBUG) {
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        } else {
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
+        }
 
         val client = OkHttpClient.Builder()
             .addInterceptor { chain ->
+                val currentToken = token ?: throw IllegalStateException("Token is not available")
+                Log.d("client", "Token client: $currentToken")
                 val request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $token")
+                    .addHeader("Authorization", "Bearer $currentToken")
                     .build()
                 chain.proceed(request)
             }

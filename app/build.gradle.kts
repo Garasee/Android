@@ -16,7 +16,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "BASE_URL", "\"https://story-api.dicoding.dev/v1/\"")
+        buildConfigField("String", "BASE_URL", "\"https://garasee-ec3hthl4iq-et.a.run.app/\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -78,5 +78,7 @@ dependencies {
     implementation ("com.android.volley:volley:1.2.1")
     implementation ("androidx.room:room-runtime:2.6.1")
     ksp ("androidx.room:room-compiler:2.6.1")
+    implementation ("com.googlecode.libphonenumber:libphonenumber:8.12.29")
+
 
 }

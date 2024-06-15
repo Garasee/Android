@@ -1,32 +1,25 @@
 package com.example.garasee.data.api
 
-//data class GetUserResponse(
-//    @SerializedName("isSuccess")
-//    val isSuccess: Boolean,
-//
-//    @SerializedName("statusCode")
-//    val statusCode: Int,
-//
-//    @SerializedName("message")
-//    val message: String,
-//
-//    @SerializedName("content")
-//    val content: User
-//)
-//
-//data class User(
-//    @SerializedName("name")
-//    val name: String,
-//
-//    @SerializedName("email")
-//    val email: String,
-//
-//    @SerializedName("phone")
-//    val phone: String,
-//
-//    @SerializedName("province")
-//    val province: String,
-//
-//    @SerializedName("city")
-//    val city: String
-//)
+data class GetUserResponse(
+	val code: Int,
+	val message: String,
+	val content: Result,
+	val isSuccess: Boolean
+)
+
+data class Result(
+	val user: User
+)
+
+data class City(
+	val name: String,
+	val id: String
+)
+
+data class User(
+	val phone: String,
+	val city: City,
+	val name: String,
+	val id: String,
+	val email: String
+)

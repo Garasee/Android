@@ -1,6 +1,5 @@
 package com.example.garasee.view.history
 
-import android.app.Application
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.view.LayoutInflater
@@ -69,7 +68,6 @@ class HistoryAdapter(private val mNoteRepository: NoteRepository) : RecyclerView
                     .load(note.imageUrl)
                     .into(binding.imageView)
 
-                // Set onClickListener untuk tombol delete
                 btnDelete.setOnClickListener {
                     val context = itemView.context
                     AlertDialog.Builder(context)

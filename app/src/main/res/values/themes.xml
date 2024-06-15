@@ -1,9 +1,8 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
-    <style name="Base.Theme.Garasee" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.Garasee" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/blue</item>
     </style>
 
-    <style name="Theme.Garasee" parent="Base.Theme.Garasee" />
 </resources>

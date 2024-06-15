@@ -6,6 +6,7 @@ import android.app.Application
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -13,19 +14,22 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
-import com.example.garasee.databinding.ActivityLoginBinding
 import com.example.garasee.R
 import com.example.garasee.data.pref.UserModel
+import com.example.garasee.databinding.ActivityLoginBinding
+import com.example.garasee.di.Injection
 import com.example.garasee.helper.ViewModelFactory
 import com.example.garasee.view.forgot.ForgotActivity
 import com.example.garasee.view.main.MainActivity
 import com.example.garasee.view.signup.SignupActivity
 import com.example.garasee.view.welcome.WelcomeActivity
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var viewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var token: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +37,32 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         lifecycleScope.launch {
+            val userPreference = Injection.provideUserPreference(applicationContext)
+            token = userPreference.getToken().firstOrNull() ?: ""
+            Log.d("LoginActivity", "Token: $token")
+
+            if (token.isNotEmpty()) {
+                navigateToMain()
+                return@launch
+            }
+
+            val isLoggedIn = userPreference.isLoggedin().firstOrNull() ?: ""
+            Log.d("LoginActivity", "IsLoggedIn: $isLoggedIn")
+
+
             val viewModelFactory = ViewModelFactory.getInstance(application as Application)
-            viewModel = ViewModelProvider(this@LoginActivity, viewModelFactory).get(LoginViewModel::class.java)
+            viewModel = ViewModelProvider(this@LoginActivity, viewModelFactory)[LoginViewModel::class.java]
         }
 
         setupView()
         setupAction()
         playAnimation()
+    }
+
+    private fun navigateToMain() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 
     private fun setupView() {
@@ -60,9 +83,11 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.edLoginEmail.text.toString()
             val password = binding.edLoginPassword.text.toString()
             if (checkInput(email, password)) {
+                binding.progressBar.visibility = View.VISIBLE
                 viewModel.login(email, password).observe(this) { user ->
+                    binding.progressBar.visibility = View.GONE
                     if (user != null) {
-                        viewModel.saveSession(UserModel(user.userId, user.token, true))
+                        viewModel.saveSession(UserModel(user.token, true))
                         showSuccessDialog()
                     } else {
                         showErrorDialog()
@@ -119,7 +144,7 @@ class LoginActivity : AppCompatActivity() {
     private fun showErrorDialog() {
         AlertDialog.Builder(this).apply {
             setTitle("Oh no!")
-            setMessage("Login failed. Make sure your email and password are correct!.")
+            setMessage("Login failed. Make sure your email and password are correct!")
             setIcon(R.drawable.baseline_error_outline_24)
             setPositiveButton("OK", null)
             create()

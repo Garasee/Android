@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
@@ -35,7 +34,6 @@ class PasswordEditText : AppCompatEditText {
 
         setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                // Adjust the touch area to account for the padding
                 if (event.rawX >= (right - iconBounds.width() - paddingEnd) &&
                     event.rawX <= (right - paddingEnd)) {
                     togglePasswordVisibility()
@@ -67,19 +65,18 @@ class PasswordEditText : AppCompatEditText {
         else
             PasswordTransformationMethod.getInstance()
 
-        // Move the cursor to the end of the text
         setSelection(text?.length ?: 0)
 
         invalidate()
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun updateVisibilityIcon() {
         val icon = if (isPasswordVisible)
             R.drawable.baseline_visibility_24
         else
             R.drawable.baseline_visibility_off_24
 
-        // Set the icon with padding
         val drawable = context.getDrawable(icon)
         drawable?.bounds?.let { iconBounds = it }
 
@@ -90,12 +87,12 @@ class PasswordEditText : AppCompatEditText {
     }
 
     private fun validatePassword(password: String) {
-        if (password.isEmpty()) {
-            error = null
+        error = if (password.isEmpty()) {
+            null
         } else if (password.length < 8) {
-            error = context.getString(R.string.invalid_password)
+            context.getString(R.string.invalid_password)
         } else {
-            error = null
+            null
         }
     }
 }

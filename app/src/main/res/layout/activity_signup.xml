@@ -5,12 +5,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.signup.SignupActivity">
+    tools:context=".view.signup.SignupActivity"
+    android:background="@color/white">
 
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        android:elevation="4dp"/>
 
     <TextView
         android:id="@+id/titleTextView"
@@ -65,6 +77,8 @@
             android:inputType="text"
             android:maxLines="1"
             android:hint="@string/name"
+            android:textColorHint="@color/grey"
+            android:textColor="@color/black"
             android:paddingHorizontal="24dp"
             android:background="@drawable/whitebox_background"
             app:layout_constraintEnd_toEndOf="parent"
@@ -90,14 +104,20 @@
             app:ccp_showFlag="true"
             app:ccp_autoFormatNumber="false"
             app:ccp_showArrow="true"
+            app:ccp_arrowColor="@color/black"
             app:ccp_defaultPhoneCode="62"
             app:ccp_textSize="16sp"
+            android:textColor="@color/black"
             app:ccp_arrowSize="16sp"
             app:ccpDialog_keyboardAutoPopup="false"
             android:layout_gravity="center"
             android:gravity="center"
             android:background="@drawable/whitebox_background"
             android:paddingHorizontal="4dp"
+            app:ccpDialog_background="@color/white"
+            app:ccpDialog_searchEditTextTint="@color/black"
+            app:ccpDialog_showCloseIcon="true"
+            app:ccpDialog_showFastScroller="true"
             />
 
         <com.example.garasee.view.customView.NumberEditText
@@ -107,27 +127,51 @@
             android:inputType="text"
             android:maxLines="1"
             android:hint="@string/phone_number"
-            android:layout_marginLeft="8dp"
+            android:textColorHint="@color/grey"
+            android:textColor="@color/black"
+            android:layout_marginStart="8dp"
             android:paddingHorizontal="24dp"
             android:background="@drawable/whitebox_background"
              />
 
         </LinearLayout>
 
-        <com.example.garasee.view.customView.NameEditText
-            android:id="@+id/ed_register_city"
+        <com.google.android.material.textfield.TextInputLayout
+            app:boxBackgroundColor="@color/white2"
+            app:boxStrokeColor="@color/white2"
+            app:boxStrokeErrorColor="@color/defaultBorderFlagColor"
+            app:boxStrokeWidth="0dp"
+            app:hintEnabled="false"
+            app:boxCornerRadiusTopStart="20dp"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:endIconMode="dropdown_menu"
+            app:endIconTint="@color/grey"
             android:layout_width="match_parent"
             android:layout_height="72dp"
             android:layout_marginTop="12dp"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
-            android:inputType="text"
-            android:maxLines="1"
-            android:hint="@string/city"
-            android:paddingHorizontal="24dp"
-            android:background="@drawable/whitebox_background"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <!-- Inside text input layout add
+                  an auto complete text view
+                    and make its input type to none-->
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/autoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:gravity="center_vertical"
+                android:paddingHorizontal="24dp"
+            android:hint="@string/city"
+                android:textColorHint="@color/grey"
+                android:textColor="@color/black"
+            android:inputType="text"
+            android:textSize="18sp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.example.garasee.view.customView.EmailEditText
             android:id="@+id/ed_register_email"
@@ -137,6 +181,8 @@
             android:layout_marginEnd="40dp"
             android:inputType="textEmailAddress"
             android:hint="@string/email"
+            android:textColorHint="@color/grey"
+            android:textColor="@color/black"
             android:paddingHorizontal="24dp"
             android:background="@drawable/whitebox_background"
             app:layout_constraintEnd_toEndOf="parent"
@@ -152,6 +198,8 @@
             android:layout_marginEnd="40dp"
             android:layout_marginTop="12dp"
             android:hint="@string/password"
+            android:textColorHint="@color/grey"
+            android:textColor="@color/black"
             android:paddingHorizontal="24dp"
             android:inputType="textPassword"
             app:endIconMode="password_toggle"
@@ -160,13 +208,15 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <com.example.garasee.view.customView.PasswordEditText
-            android:id="@+id/ed_register_confirmpassword"
+            android:id="@+id/ed_register_Confirmpassword"
             android:layout_width="match_parent"
             android:layout_height="72dp"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
             android:layout_marginTop="12dp"
             android:hint="@string/confirm_passsword"
+            android:textColorHint="@color/grey"
+            android:textColor="@color/black"
             android:paddingHorizontal="24dp"
             android:inputType="textPassword"
             app:endIconMode="password_toggle"
@@ -179,7 +229,7 @@
     <Button
         android:id="@+id/signupButton"
         android:layout_width="0dp"
-        android:layout_height="64dp"
+        android:layout_height="72dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="40dp"
@@ -187,6 +237,7 @@
         android:text="@string/register"
         android:textStyle="bold"
         android:textSize="20sp"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linear2" />

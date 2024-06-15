@@ -35,12 +35,12 @@ class NumberEditText : AppCompatEditText {
     }
 
     private fun validateNumber(number: String) {
-        if (number.isEmpty()) {
-            error = null
+        error = if (number.isEmpty()) {
+            null
         } else if (!number.matches("\\d+".toRegex())) {
-            error = context.getString(R.string.invalid_number)
+            context.getString(R.string.invalid_number)
         } else {
-            error = null
+            null
         }
     }
 }

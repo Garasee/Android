@@ -1,9 +1,13 @@
 package com.example.garasee.view.result
 
+import android.annotation.SuppressLint
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.appcompat.widget.Toolbar
 import com.example.garasee.R
 import com.example.garasee.databinding.ActivityResultBinding
@@ -21,13 +25,24 @@ class ResultActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityResultBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+
         val toolbar = findViewById<Toolbar>(R.id.toolbar4)
-        toolbar.title = "Result"
+        toolbar.title = ""
 
         setSupportActionBar(toolbar)
 
