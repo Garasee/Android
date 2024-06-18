@@ -576,4 +576,5 @@
     <string name="invalid_dooramount">Please input your car door amount!</string>
     <string name="invalid_seat">Please input your car seat capacity!</string>
     <string name="history_not_found">History not found!</string>
+    <string name="account_information">Account Information</string>
 </resources>
