@@ -1,47 +1,33 @@
 package com.example.garasee.view.home
 
+import android.app.Application
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
-import android.view.WindowManager
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.garasee.R
-import com.example.garasee.database.Note
-import com.example.garasee.repository.NoteRepository
 import com.example.garasee.databinding.FragmentHomeBinding
-import com.example.garasee.helper.ImageClassifierHelper
-import com.example.garasee.utils.Utils
-import com.example.garasee.view.result.ResultActivity
-import com.yalantis.ucrop.UCrop
-import org.tensorflow.lite.task.vision.classifier.Classifications
-import java.io.File
+import com.example.garasee.helper.ViewModelFactory
+import com.example.garasee.view.main.MainActivity
 import java.text.NumberFormat
-import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 class HomeFragment : Fragment() {
-    private lateinit var mNoteRepository: NoteRepository
+    private lateinit var viewModel: HomeViewModel
     private lateinit var binding: FragmentHomeBinding
 
-    private var currentImageUri: Uri? = null
-
-    private lateinit var imageClassifierHelper: ImageClassifierHelper
-
-    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+    private val isNewMap = mapOf(
+    "New" to true,
+    "Second" to false
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,197 +40,234 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            activity?.window?.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            activity?.window?.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
+        val conditionArray = resources.getStringArray(R.array.condition_array)
+        val conditionAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, conditionArray)
+        val tvHomeCondition = binding.tvHomeCondition
+        tvHomeCondition.setAdapter(conditionAdapter)
 
-        mNoteRepository = NoteRepository(requireActivity().application)
-
-        binding.galleryButton.setOnClickListener { startGallery() }
-
-        binding.cameraButton.setOnClickListener { startCamera() }
-
-        binding.analyzeButton.setOnClickListener { analyzeImage() }
-
-
-    }
-
-    private fun startGallery() {
-        launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-    }
-
-    private val launcherGallery = registerForActivityResult(
-        ActivityResultContracts.PickVisualMedia()
-    ) { uri: Uri? ->
-        if (uri != null) {
-            startUCrop(uri)
-        } else {
-            Log.d("Photo Picker", "No media selected")
-        }
-    }
-
-    private fun startCamera() {
-        val utils = Utils()
-        currentImageUri = utils.getImageUri(requireContext())
-        currentImageUri?.let { launcherIntentCamera.launch(it) }
-    }
-
-    private val launcherIntentCamera = registerForActivityResult(
-        ActivityResultContracts.TakePicture()
-    ) { isSuccess ->
-        if (isSuccess) {
-            showImage()
-        }
-    }
-
-    private fun startUCrop(uri: Uri) {
-        val options = UCrop.Options()
-
-        val tempFile = File.createTempFile("cropped_image", ".jpg", requireActivity().cacheDir)
-
-        UCrop.of(uri, Uri.fromFile(tempFile))
-            .withOptions(options)
-            .start(requireContext(), this)
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == UCrop.REQUEST_CROP && resultCode == AppCompatActivity.RESULT_OK) {
-            val resultUri = UCrop.getOutput(data!!)
-            resultUri?.let {
-                currentImageUri = it
-                showImage()
-            }
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            val error = UCrop.getError(data!!)
-            error?.let {
-                Log.e("UCrop Error", "Error: $error")
+        tvHomeCondition.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                validateCondition(tvHomeCondition, conditionArray)
             }
         }
-    }
 
-    private fun showImage() {
-        currentImageUri?.let {
-            binding.previewImageView.setImageURI(null)
-            binding.previewImageView.setImageURI(it)
+        tvHomeCondition.setOnDismissListener {
+            validateCondition(tvHomeCondition, conditionArray)
         }
-    }
 
-    private fun analyzeImage() {
-        currentImageUri?.let { uri ->
-            val timestamp: String = SimpleDateFormat("ddMMyyyy_HHmmss", Locale.getDefault()).format(Date())
+        tvHomeCondition.setOnEditorActionListener { _, _, _ ->
+            validateCondition(tvHomeCondition, conditionArray)
+            false
+        }
 
-            val imagePath = getPathFromUri(uri)
-            Log.d("imagePath", imagePath)
+        val injectionArray = resources.getStringArray(R.array.injection_array)
+        val injectionAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, injectionArray)
+        val tvHomeInjection = binding.tvHomeInjection
+        tvHomeInjection.setAdapter(injectionAdapter)
 
-            val cachePath = File(requireActivity().cacheDir, "cropped_image")
-            if (cachePath.exists() && !cachePath.isDirectory) {
-                cachePath.delete()
+        tvHomeInjection.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                validateInjection(tvHomeInjection, injectionArray)
             }
-            Log.d("cachePath", cachePath.toString())
-            if (!cachePath.exists()) {
-                cachePath.mkdir()
+        }
+
+        tvHomeInjection.setOnDismissListener {
+            validateInjection(tvHomeInjection, injectionArray)
+        }
+
+        tvHomeInjection.setOnEditorActionListener { _, _, _ ->
+            validateInjection(tvHomeInjection, injectionArray)
+            false
+        }
+
+        val factory = ViewModelFactory.getInstance(requireActivity().application as Application)
+        viewModel = ViewModelProvider(this@HomeFragment, factory)[HomeViewModel::class.java]
+
+        binding.progressBar.visibility = View.VISIBLE
+
+        viewModel.fetchUser()
+
+        viewModel.user.observe(viewLifecycleOwner) { user ->
+            user?.let {
+                binding.nameTextView.text = it.content.user.name
             }
-            val uniqueImagePath = "$cachePath/$timestamp"
+            binding.progressBar.visibility = View.GONE
+        }
 
-            val file = File(imagePath)
-            file.copyTo(File(uniqueImagePath))
+        binding.submitButton.setOnClickListener {
+            val brand = binding.edHomeBrand.text.toString()
 
-            val uniqueUri = Uri.fromFile(File(uniqueImagePath))
+            val enteredisNew = binding.tvHomeCondition.text.toString()
+            val isNew = isNewMap[enteredisNew]
 
-            imageClassifierHelper = ImageClassifierHelper(
-                context = requireContext(),
-                classifierListener = object : ImageClassifierHelper.ClassifierListener {
-                    override fun onError(error: String) {
-                        requireActivity().runOnUiThread {
-                            Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
-                        }
-                    }
 
-                    override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
-                        requireActivity().runOnUiThread {
-                            results?.let { it ->
-                                val displayResult = if (it.isNotEmpty() && it[0].categories.isNotEmpty()) {
-                                    val sortedCategories = it[0].categories.sortedByDescending { it?.score }
-                                    val topCategory = sortedCategories.firstOrNull()
-                                    topCategory?.let {
-                                        "${it.label} " + NumberFormat.getPercentInstance().format(it.score).trim()
-                                    } ?: "No results"
-                                } else {
-                                    "No results"
-                                }
+            val year = binding.edHomeYear.text.toString().toInt()
+            val engineCapacity = binding.edHomeEngine.text.toString().toFloat()
+            val peakPower = binding.edHomePeakpower.text.toString().toFloat()
+            val peakTorque = binding.edHomePeaktorque.text.toString().toFloat()
+            val injection = binding.tvHomeInjection.text.toString()
+            val length = binding.edHomeLength.text.toString().toFloat()
+            val width = binding.edHomeWidth.text.toString().toFloat()
+            val wheelBase = binding.edHomeWheelbase.text.toString().toFloat()
+            val doorAmount = binding.edHomeDooramount.text.toString().toInt()
+            val seatCapacity = binding.edHomeSeatcapacity.text.toString().toInt()
+            if (checkInput(brand, isNew!!, year, engineCapacity, peakPower, peakTorque, injection, length, width, wheelBase, doorAmount, seatCapacity)) {
+                binding.progressBar.visibility = View.VISIBLE
+                viewModel.postPredict(brand, isNew, year, engineCapacity, peakPower, peakTorque, injection, length, width, wheelBase, doorAmount, seatCapacity)
+                viewModel.predict.observe(viewLifecycleOwner) { predict ->
+                    predict?.let {
+                        binding.progressBar.visibility = View.GONE
+                        val format: NumberFormat = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
+                        val formattedPrice = format.format(it.content.price.toString().toDouble())
+                        showResultDialog(brand, it.content.isAcceptable, formattedPrice)
 
-                                var actionCompleted = false
-
-                                mNoteRepository.getNoteByTimestamp(timestamp).observe(viewLifecycleOwner) { note ->
-                                    if (!actionCompleted) {
-                                        if (note == null) {
-                                            val newNote = Note().apply {
-                                                this.timestamp = timestamp
-                                                this.imageUrl = uniqueUri.toString()
-                                                this.result = displayResult
-                                            }
-                                            mNoteRepository.insert(newNote)
-                                        } else {
-                                            showToast(getString(R.string.mNoteNull))
-                                        }
-
-                                        actionCompleted = true
-                                    }
-                                }
-                                moveToResult(displayResult, timestamp)
-                            }
-                        }
+                    } ?: run {
+                        binding.progressBar.visibility = View.GONE
+                        showErrorDialog()
                     }
                 }
-            )
-            imageClassifierHelper.classifyStaticImage(uri, requireContext())
-        } ?: showToast(getString(R.string.no_image))
-
-    }
-
-    private fun getPathFromUri(uri: Uri): String {
-        val filePath: String
-        val cursor = requireActivity().contentResolver.query(uri, null, null, null, null)
-        if (cursor == null) {
-            filePath = uri.path.toString()
-        } else {
-            cursor.moveToFirst()
-            val index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            filePath = cursor.getString(index)
-            cursor.close()
+            }
         }
-        return filePath
+
     }
 
-    private fun moveToResult(displayResult: String, timestamp: String) {
-        val intent = Intent(requireActivity(), ResultActivity::class.java).apply {
-            putExtra(ResultActivity.EXTRA_IMAGE_URI, currentImageUri.toString())
-            putExtra(ResultActivity.EXTRA_RESULT, displayResult)
-            putExtra(ResultActivity.EXTRA_TIMESTAMP, timestamp)
+    private fun showResultDialog(brand: String, isAcceptable: Boolean, price: String) {
+        val acceptableText = if (isAcceptable) "Acceptable" else "Not Acceptable"
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Prediction Result")
+            .setMessage("Brand: $brand\nIs Acceptable: $acceptableText\nPrice: $price")
+            .setIcon(R.drawable.baseline_directions_car_24)
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+                navigateToHistory()
+            }
+            .create()
+            .show()
+    }
+
+
+    private fun showErrorDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Error")
+            .setMessage("Failed to get prediction result. Please try again.")
+            .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+            .create()
+            .show()
+    }
+
+    private fun checkInput(
+        brand: String,
+        isNew: Boolean?,
+        year: Int?,
+        engineCapacity: Float?,
+        peakPower: Float?,
+        peakTorque: Float?,
+        injection: String,
+        length: Float?,
+        width: Float?,
+        wheelBase: Float?,
+        doorAmount: Int?,
+        seatCapacity: Int?
+    ): Boolean {
+
+        var isValid = true
+
+        if (brand.isEmpty()) {
+            binding.edHomeBrand.error = getString(R.string.invalid_brand)
+            isValid = false
+        }
+
+        if (isNew == null) {
+            binding.tvHomeCondition.error = getString(R.string.invalid_condition)
+            isValid = false
+        }
+
+        if (year == null || year <= 0) {
+            binding.edHomeYear.error = getString(R.string.invalid_year)
+            isValid = false
+        }
+
+        if (engineCapacity == null || engineCapacity <= 0) {
+            binding.edHomeEngine.error = getString(R.string.invalid_engine)
+            isValid = false
+        }
+
+        if (peakPower == null || peakPower <= 0) {
+            binding.edHomePeakpower.error = getString(R.string.invalid_peakpower)
+            isValid = false
+        }
+
+        if (peakTorque == null || peakTorque <= 0) {
+            binding.edHomePeaktorque.error = getString(R.string.invalid_peaktorque)
+            isValid = false
+        }
+
+        if (injection.isEmpty()) {
+            binding.tvHomeInjection.error = getString(R.string.invalid_injection)
+            isValid = false
+        }
+
+        if (length == null || length <= 0) {
+            binding.edHomeLength.error = getString(R.string.invalid_length)
+            isValid = false
+        }
+
+        if (width == null || width <= 0) {
+            binding.edHomeWidth.error = getString(R.string.invalid_width)
+            isValid = false
+        }
+
+        if (wheelBase == null || wheelBase <= 0) {
+            binding.edHomeWheelbase.error = getString(R.string.invalid_wheelbase)
+            isValid = false
+        }
+
+        if (doorAmount == null || doorAmount <= 0) {
+            binding.edHomeDooramount.error = getString(R.string.invalid_dooramount)
+            isValid = false
+        }
+
+        if (seatCapacity == null || seatCapacity <= 0) {
+            binding.edHomeSeatcapacity.error = getString(R.string.invalid_seat)
+            isValid = false
+        }
+
+        return isValid
+    }
+
+
+    private fun validateCondition(tvHomeCondition: AutoCompleteTextView, validOptions: Array<String>) {
+        val enteredText = tvHomeCondition.text.toString()
+        if (validOptions.contains(enteredText)) {
+            Log.d("SelectedCondition", "Selected condition: $enteredText")
+        } else {
+            tvHomeCondition.text = null
+            Log.d("InvalidCondition", "Entered condition is not valid: $enteredText")
+            Toast.makeText(requireContext(), "Invalid condition. Please select a valid condition.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun validateInjection(tvHomeInjection: AutoCompleteTextView, validOptions: Array<String>) {
+        val enteredText = tvHomeInjection.text.toString()
+        if (validOptions.contains(enteredText)) {
+            Log.d("SelectedInjection", "Selected injection: $enteredText")
+        } else {
+            tvHomeInjection.text = null
+            Log.d("InvalidInjection", "Entered injection is not valid: $enteredText")
+            Toast.makeText(requireContext(), "Invalid injection. Please select a valid injection.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    private fun navigateToHistory() {
+        val intent = Intent(requireContext(), MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            putExtra("fragment", "history")
         }
         startActivity(intent)
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            true
-        } else {
-            super.onOptionsItemSelected(item)
-        }
-    }
 
 
 }

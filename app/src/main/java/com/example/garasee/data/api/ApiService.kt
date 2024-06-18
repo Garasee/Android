@@ -1,6 +1,7 @@
 package com.example.garasee.data.api
 
 import com.example.garasee.data.pref.ChangePasswordRequest
+import com.example.garasee.data.pref.PostPredictRequest
 import com.example.garasee.data.pref.UpdateUserRequest
 import retrofit2.Response
 import retrofit2.http.Body
@@ -32,7 +33,8 @@ interface ApiService {
     ): SignupResponse
 
     @GET("users")
-    suspend fun getUser(): Response<GetUserResponse>
+    suspend fun getUser(
+    ): Response<GetUserResponse>
 
     @PUT("users")
     suspend fun updateUser(
@@ -43,5 +45,13 @@ interface ApiService {
     suspend fun changePassword(
         @Body request: ChangePasswordRequest
     ): CommonResponse
+
+    @GET("predictions")
+    suspend fun getHistory(): Response<HistoryResponse>
+
+    @POST("predictions")
+    suspend fun getPrediction(
+        @Body predictRequest: PostPredictRequest
+    ): Response<PredictionResponse>
 
 }

@@ -7,6 +7,7 @@ import com.example.garasee.data.pref.dataStore
 import com.example.garasee.repository.UserRepository
 import com.example.garasee.data.api.ApiConfig
 import com.example.garasee.data.api.ApiService
+import com.example.garasee.repository.HistoryRepository
 import com.example.garasee.repository.ProfileRepository
 import com.example.garasee.repository.SignupRepository
 import kotlinx.coroutines.runBlocking
@@ -29,6 +30,12 @@ object Injection {
         val pref = provideUserPreference(context)
         val apiService = provideApiService(context)
         return UserRepository.getInstance(pref, apiService)
+    }
+
+    suspend fun provideHistoryRepository(context: Context): HistoryRepository {
+        val pref = provideUserPreference(context)
+        val apiService = provideApiService(context)
+        return HistoryRepository.getInstance(pref, apiService)
     }
 
     suspend fun provideProfileRepository(context: Context): ProfileRepository {

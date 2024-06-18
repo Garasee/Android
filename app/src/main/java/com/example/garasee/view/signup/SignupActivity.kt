@@ -630,6 +630,7 @@ class SignupActivity : AppCompatActivity() {
                                 type = DialogType.SUCCESS,
                                 icon = R.drawable.outline_how_to_reg_24,
                                 doAction = {
+                                    navigateToWelcome()
                                     finish()
                                 }
                             )
@@ -661,6 +662,13 @@ class SignupActivity : AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
+    }
+
+    private fun navigateToWelcome() {
+        val intent = Intent(this, WelcomeActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        startActivity(intent)
     }
 
     override fun onBackPressed() {

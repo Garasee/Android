@@ -9,32 +9,30 @@
     <string name="password">Password</string>
     <string name="invalid_name">Please enter your name!</string>
     <string name="invalid_email">Please enter a valid email!</string>
-    <string name="invalid_number">Please enter your phone number!</string>
+    <string name="invalid_number">Please enter a valid numbers only!</string>
+    <string name="invalid_year">Please enter a valid year!</string>
     <string name="invalid_password">Password should be at least 8 characters!</string>
     <string name="invalid_city">Please select a city!</string>
     <string name="message_login_page">Sign in to your account</string>
-    <string name="no_image">Please enter an image!</string>
-    <string name="camera">Camera</string>
-    <string name="gallery">Gallery</string>
-    <string name="analyze">Analyze</string>
-    <string name="result">Hasil Analisis</string>
     <string name="image_classifier_failed">Image classifier failed to initialize. See error logs for details</string>
-    <string name="mNoteNull">MNote Null when adding from MainActivity</string>
-    <string name="forgot_password">Forgot password?</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="register">Register</string>
     <string name="create_your_account">Create your account</string>
     <string name="confirm_passsword">Confirm passsword</string>
     <string name="phone_number">Phone number</string>
     <string name="already_have_an_account">Already have an account?</string>
-    <string name="forgot_your_password">Forgot your password?</string>
-    <string name="send_code">Send Code</string>
-    <string name="please_fill_in_the_email_that_you_used_to_register_you_will_be_sent_a_code_to_reset_your_password">Please fill in the email that you used to register. You will be sent a code to reset your password.</string>
-    <string name="remember_your_password">Remember your password?</string>
     <string name="password_do_not_match">Password do not match</string>
     <string name="city">City</string>
     <string name="open_nav">Open Navigation Drawer</string>
     <string name="close_nav">Close Navigation Drawer</string>
+    <string-array name="condition_array">
+        <item>New</item>
+        <item>Second</item>
+    </string-array>
+    <string-array name="injection_array">
+        <item>Direct Injection</item>
+        <item>Multi-Point Injection</item>
+    </string-array>
     <string-array name="city_array">
         <item>Kabupaten Aceh Barat</item>
         <item>Kabupaten Aceh Barat Daya</item>
@@ -537,7 +535,6 @@
         <item>Kabupaten Boven Digoel</item>
         <item>Kabupaten Mappi</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_profile_fragment">Hello Profile Fragment</string>
     <string name="profile">Profile</string>
     <string name="editprofile">Edit Profile</string>
@@ -553,4 +550,30 @@
     <string name="home">Home</string>
     <string name="history">History</string>
     <string name="logout">Logout</string>
+    <string name="predict_your_car_price">Predict your car price!</string>
+    <string name="brand">Brand</string>
+    <string name="condition">Condition</string>
+    <string name="year">Year</string>
+    <string name="engine_capacity">Engine Capacity (cc)</string>
+    <string name="peak_power">Peak Power (hp)</string>
+    <string name="peak_torque">Peak Torque (Nm)</string>
+    <string name="injection">Injection</string>
+    <string name="length">Length (mm)</string>
+    <string name="width">Width (mm)</string>
+    <string name="wheel_base">Wheel Base (mm)</string>
+    <string name="door_amount">Door Amount</string>
+    <string name="seat_capacity">Seat Capacity</string>
+    <string name="hello">Hello,</string>
+    <string name="invalid_brand">Please input a brand!</string>
+    <string name="invalid_condition">Please select a condition!</string>
+    <string name="invalid_engine">Please input your car engine capacity!</string>
+    <string name="invalid_peakpower">Please input your car peak power!</string>
+    <string name="invalid_peaktorque">Please input your car peak torque!</string>
+    <string name="invalid_injection">Please select a valid car injection!</string>
+    <string name="invalid_length">Please input your car length!</string>
+    <string name="invalid_width">Please input your car width!</string>
+    <string name="invalid_wheelbase">Please input your car wheel base!</string>
+    <string name="invalid_dooramount">Please input your car door amount!</string>
+    <string name="invalid_seat">Please input your car seat capacity!</string>
+    <string name="history_not_found">History not found!</string>
 </resources>

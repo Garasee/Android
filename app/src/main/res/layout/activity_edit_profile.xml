@@ -161,9 +161,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <!-- Inside text input layout add
-                  an auto complete text view
-                    and make its input type to none-->
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/autoCompleteTextView"
                 android:layout_width="match_parent"
@@ -189,6 +186,7 @@
         android:layout_marginTop="24dp"
         android:backgroundTint="@color/blue"
         android:text="@string/submit"
+        android:background="@drawable/whitebox_background"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="20sp"

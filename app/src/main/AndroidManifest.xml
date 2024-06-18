@@ -38,16 +38,6 @@
         <activity
             android:name=".view.login.LoginActivity"
             android:exported="true" />
-        <activity
-            android:name=".view.forgot.ForgotActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.result.ResultActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.yalantis.ucrop.UCropActivity"
-            android:screenOrientation="fullSensor"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

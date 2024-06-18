@@ -3,7 +3,6 @@ package com.example.garasee.view.changepassword
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsets
@@ -74,12 +73,6 @@ class ChangePasswordActivity : AppCompatActivity() {
             val oldPassword= binding.edRegisterOldpassword.text.toString()
             val password = binding.edRegisterPassword.text.toString()
             val confirmPassword = binding.edRegisterConfirmpassword.text.toString()
-
-
-            Log.d("oldPassword", "oldPassword: $oldPassword")
-            Log.d("password", "password: $password")
-            Log.d("confirmPassword", "confirmPassword: $confirmPassword")
-
 
             if (checkInput(oldPassword, password, confirmPassword)) {
                 binding.progressBar.visibility = View.VISIBLE

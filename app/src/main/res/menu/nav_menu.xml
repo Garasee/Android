@@ -2,21 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group
         android:checkableBehavior="single">
-    <item
-        android:id="@+id/nav_home"
-        android:icon="@drawable/baseline_home_24"
-        android:title="@string/home"
-        />
-    <item
-        android:id="@+id/nav_history"
-        android:icon="@drawable/baseline_history_24"
-        android:title="@string/history" />
-    <item
-        android:id="@+id/nav_profile"
-        android:icon="@drawable/baseline_account_circle_24"
-        android:title="@string/profile" />
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/baseline_home_24"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/baseline_history_24"
+            android:title="@string/history" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/baseline_account_circle_24"
+            android:title="@string/profile" />
     </group>
-
 
     <item
         android:title="">

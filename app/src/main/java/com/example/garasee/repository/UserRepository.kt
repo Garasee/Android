@@ -8,7 +8,9 @@ import java.io.IOException
 import com.example.garasee.data.api.ApiService
 import com.example.garasee.data.api.CommonResponse
 import com.example.garasee.data.api.LoginResponse
+import com.example.garasee.data.api.PredictionResponse
 import com.example.garasee.data.pref.ChangePasswordRequest
+import com.example.garasee.data.pref.PostPredictRequest
 import com.example.garasee.data.pref.UpdateUserRequest
 import com.example.garasee.data.pref.UserModel
 import com.example.garasee.data.pref.UserPreference
@@ -45,6 +47,35 @@ class UserRepository private constructor(
         }
     }
 
+    suspend fun predict(
+        brand: String,
+        isNew: Boolean,
+        year: Number,
+        engineCapacity: Float,
+        peakPower: Float,
+        peakTorque: Float,
+        injection: String,
+        length: Float,
+        width: Float,
+        wheelBase: Float,
+        doorAmount: Int,
+        seatCapacity: Int
+    ): PredictionResponse {
+
+        return try {
+            val postPredictRequest = PostPredictRequest(brand, isNew, year, engineCapacity, peakPower, peakTorque, injection,
+                length, width, wheelBase, doorAmount, seatCapacity)
+            val response = apiService.getPrediction(postPredictRequest)
+            if (response.isSuccessful) {
+                response.body() ?: throw IllegalStateException("Response body is null")
+            } else {
+                throw HttpException(response)
+            }
+        } catch (e: IOException) {
+            throw e
+        }
+    }
+
     private fun getSession(): Flow<UserModel> {
         return userPreference.getSession()
     }
@@ -59,16 +90,12 @@ class UserRepository private constructor(
 
     suspend fun validateToken(): Boolean {
         val token = userPreference.getToken().firstOrNull() ?: return false
-        Log.d("validateToken", "UserRepository: $token")
         return try {
             val response = apiService.getUser()
-            Log.d("response", "response: $token")
             if (response.isSuccessful) {
-                Log.d("isSuccessful", "isSuccessful: $token")
                 true
             } else {
                 userPreference.logout()
-                Log.d("else", "else: $token")
                 false
             }
         } catch (e: IOException) {

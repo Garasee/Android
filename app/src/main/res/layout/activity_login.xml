@@ -62,22 +62,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
-    <com.example.garasee.view.customView.EmailEditText
-        android:id="@+id/ed_login_email"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:inputType="textEmailAddress"
-        android:hint="@string/email"
-        android:textColorHint="@color/grey"
-        android:textColor="@color/black"
-        android:paddingHorizontal="24dp"
-        android:background="@drawable/whitebox_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="12dp"
-        />
+        <com.example.garasee.view.customView.EmailEditText
+            android:id="@+id/ed_login_email"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:inputType="textEmailAddress"
+            android:hint="@string/email"
+            android:textColorHint="@color/grey"
+            android:textColor="@color/black"
+            android:paddingHorizontal="24dp"
+            android:background="@drawable/whitebox_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="12dp"
+            />
 
 
         <com.example.garasee.view.customView.PasswordEditText
@@ -107,6 +107,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="40dp"
         android:backgroundTint="@color/blue"
+        android:background="@drawable/whitebox_background"
         android:text="@string/signin"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -115,23 +116,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linear2" />
 
-    <TextView
-        android:id="@+id/forgotPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="@string/forgot_password"
-        android:textColor="@color/blue"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton"
-        />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -140,34 +125,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forgotPassword">
+        app:layout_constraintTop_toBottomOf="@+id/loginButton">
 
-    <TextView
-        android:id="@+id/donthave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:gravity="center"
-        android:text="@string/don_t_have_an_account"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintHorizontal_bias="1.0"
-         />
+        <TextView
+            android:id="@+id/donthave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            android:text="@string/don_t_have_an_account"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintHorizontal_bias="1.0"
+            />
 
-    <TextView
-        android:id="@+id/signupnow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:gravity="center"
-        android:text="@string/signup"
-        android:textColor="@color/blue"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="1.0" />
+        <TextView
+            android:id="@+id/signupnow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            android:text="@string/signup"
+            android:textColor="@color/blue"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_bias="1.0" />
 
 
     </LinearLayout>

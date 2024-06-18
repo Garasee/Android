@@ -1,22 +1,27 @@
 package com.example.garasee.helper
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.garasee.di.Injection
+import com.example.garasee.repository.HistoryRepository
 import com.example.garasee.repository.UserRepository
 import com.example.garasee.view.login.LoginViewModel
 import com.example.garasee.view.main.MainViewModel
 import com.example.garasee.view.history.HistoryViewModel
 import com.example.garasee.repository.ProfileRepository
+import com.example.garasee.view.home.HomeViewModel
 import com.example.garasee.view.profile.ProfileViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 
 class ViewModelFactory private constructor(
-    private val application: Application,
     private val userRepository: UserRepository,
-    private val profileRepository: ProfileRepository
+    private val profileRepository: ProfileRepository,
+    private var historyRepository: HistoryRepository?
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -44,9 +49,11 @@ class ViewModelFactory private constructor(
                 LoginViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
-                HistoryViewModel(application) as T
+                HistoryViewModel(historyRepository!!) as T
             }
-
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                HomeViewModel(userRepository, profileRepository) as T
+            }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
     }
@@ -61,11 +68,17 @@ class ViewModelFactory private constructor(
                 runBlocking {
                     val userRepository = Injection.provideUserRepository(application)
                     val profileRepository = Injection.provideProfileRepository(application)
-                    instance = ViewModelFactory(application, userRepository, profileRepository)
+                    val historyRepository = Injection.provideHistoryRepository(application)
+                    instance = ViewModelFactory(userRepository, profileRepository, historyRepository)
                 }
                 INSTANCE = instance
                 instance
             }
+        }
+
+        suspend fun updateHistoryRepository(context: Context) {
+            val historyRepository = withContext(Dispatchers.IO) { Injection.provideHistoryRepository(context) }
+            INSTANCE?.historyRepository = historyRepository
         }
 
     }

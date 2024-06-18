@@ -55,18 +55,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-        intent?.let { intent ->
-            if (intent.hasExtra("fragment")) {
-                val fragmentTag = intent.getStringExtra("fragment")
-                if (fragmentTag == "profile") {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, ProfileFragment())
-                        .commit()
-                    navigationView.setCheckedItem(R.id.nav_profile)
-                    return@onCreate
-                }
-            }
-        }
+
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
@@ -89,14 +78,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val isLoggedIn = userPreference.isLoggedin().firstOrNull() ?: ""
             Log.d("MainActivity", "IsLoggedIn: $isLoggedIn")
 
-            token = userPreference.getToken().firstOrNull() ?: ""
-            Log.d("MainActivity", "Token: $token")
-
-            if (token.isEmpty()) {
-                navigateToWelcome()
-                return@launch
-            }
-
             val isValidToken = userRepository.validateToken()
             Log.d("MainActivity", "IsValidToken: $isValidToken")
 
@@ -117,6 +98,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 navigateToWelcome()
             }
         }
+
+        intent?.let { intent ->
+            if (intent.hasExtra("fragment")) {
+                val fragmentTag = intent.getStringExtra("fragment")
+                if (fragmentTag == "profile") {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, ProfileFragment())
+                        .commit()
+                    navigationView.setCheckedItem(R.id.nav_profile)
+                    return@onCreate
+                }
+                if (fragmentTag == "history") {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, HistoryFragment())
+                        .commit()
+                    navigationView.setCheckedItem(R.id.nav_history)
+                    return@onCreate
+                }
+            }
+
+        }
     }
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -128,7 +130,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .replace(R.id.fragment_container, ProfileFragment()).commit()
 
             R.id.nav_logout -> lifecycleScope.launch {
-                viewModel.logout()
+                viewModel?.logout()
                 navigateToWelcome()
             }
         }

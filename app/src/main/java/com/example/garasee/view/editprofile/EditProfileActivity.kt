@@ -549,7 +549,6 @@ class EditProfileActivity : AppCompatActivity() {
         binding.edRegisterName.setText(name)
         binding.autoCompleteTextView.setText(city)
 
-        // Handle phone number
         val ccp = binding.countryCodeHolder
         val phoneNumberEditText = binding.edRegisterPhone
 
@@ -629,10 +628,6 @@ class EditProfileActivity : AppCompatActivity() {
 
             val enteredText = binding.autoCompleteTextView.text.toString()
             val selectedCityId = cityIdMap[enteredText].toString()
-
-            Log.d("name", "name: $name")
-            Log.d("fullphonenumber", "fullphonenumber: $fullphonenumber")
-            Log.d("selectedCityId", "selectedCityId: $selectedCityId")
 
 
             if (checkInput(name, phonenumbertext, enteredText)) {

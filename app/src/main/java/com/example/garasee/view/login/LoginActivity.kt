@@ -19,7 +19,6 @@ import com.example.garasee.data.pref.UserModel
 import com.example.garasee.databinding.ActivityLoginBinding
 import com.example.garasee.di.Injection
 import com.example.garasee.helper.ViewModelFactory
-import com.example.garasee.view.forgot.ForgotActivity
 import com.example.garasee.view.main.MainActivity
 import com.example.garasee.view.signup.SignupActivity
 import com.example.garasee.view.welcome.WelcomeActivity
@@ -103,12 +102,6 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        binding.forgotPassword.setOnClickListener {
-            val intent = Intent(this, ForgotActivity::class.java)
-            intent.flags =
-                Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-        }
     }
 
     private fun checkInput(email: String, password: String): Boolean {
@@ -157,7 +150,6 @@ class LoginActivity : AppCompatActivity() {
         val desc = ObjectAnimator.ofFloat(binding.descTextView, View.ALPHA, 1f).setDuration(100)
         val emailview = ObjectAnimator.ofFloat(binding.edLoginEmail, View.ALPHA, 1f).setDuration(100)
         val passview = ObjectAnimator.ofFloat(binding.edLoginPassword, View.ALPHA, 1f).setDuration(100)
-        val forgot = ObjectAnimator.ofFloat(binding.forgotPassword, View.ALPHA, 1f).setDuration(100)
         val donthave = ObjectAnimator.ofFloat(binding.donthave, View.ALPHA, 1f).setDuration(100)
         val signupnow = ObjectAnimator.ofFloat(binding.signupnow, View.ALPHA, 1f).setDuration(100)
         val loginbuttonview = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 1f).setDuration(100)
@@ -167,7 +159,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         AnimatorSet().apply {
-            playSequentially(title, desc, together, loginbuttonview, forgot, donthave, signupnow)
+            playSequentially(title, desc, together, loginbuttonview, donthave, signupnow)
             start()
         }
 
