@@ -10,7 +10,7 @@ Our app, Garasee, is here to help users find reasonable prices for used cars qui
 
 ## Screenshots
 ![photo-collage1](https://github.com/Garasee/Android/assets/113814423/6973c093-5a2c-4209-9b76-e336ba57e395)
-![photo-collage2](https://github.com/Garasee/Android/assets/113814423/34de236b-5f16-4bbd-b637-59895af6c43c)
+![photo-collage2](https://github.com/Garasee/Android/assets/113814423/b8fd12b3-6a01-4182-a76d-428301a6bf60)
 
 ## Getting Started
 1. Clone this repository
