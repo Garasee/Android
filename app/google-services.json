@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "800374476362",
+    "project_id": "garasee-bangkit",
+    "storage_bucket": "garasee-bangkit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800374476362:android:00db63ba7d05fa4b48e0b3",
+        "android_client_info": {
+          "package_name": "com.example.garasee"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0UEMx0Y_rdDpFcSW9DgDmBhuoIasGkww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
